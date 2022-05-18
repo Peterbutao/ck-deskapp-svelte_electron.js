@@ -1,0 +1,37 @@
+:root{
+    --w: white;
+    --be: #0C99FF;
+    --bg-we: #ffffff;
+    --tc: black;
+    //gradient
+    --gwp:  -webkit-linear-gradient(315deg, var(--d-pe) 25%, var(--be));
+    --gpb:  -webkit-linear-gradient(315deg, var(--pe) 25%, var(--f-be));
+    //toggle bars
+    --d-pe: #87629D;
+    //dark blue settngs #005999//
+    //app page one
+    --f-be: #D1ECFF;
+    --pe: #D8CCDF;
+    --f-pe: hsl(280, 20%, 84%);
+    --gy: #F3F1F1;
+    //input form one
+    --gn: #24A921;
+    --f-gn: #23a92155;
+    --we: #EFEBEB;
+    --rd: #B60303;
+    --d-be: #005999;
+    // --faded green : gn color 29% opacity //
+}
+
+@mixin font($c, $s, $w){
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: $w;
+    font-size: $s;
+    color: $c;
+}
+
+ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
