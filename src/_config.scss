@@ -1,8 +1,9 @@
 :root{
-    --w: white;
-    --be: #0C99FF;
-    --bg-we: #ffffff;
-    --tc: black;
+    //global
+    --w: hsl(0, 0%, 100%);
+    --be: hsl(205, 100%, 52%);
+    --bg-we: seashell;
+    --tc: hsl(0, 0%, 0%);
     //gradient
     --gwp:  -webkit-linear-gradient(315deg, var(--d-pe) 25%, var(--be));
     --gpb:  -webkit-linear-gradient(315deg, var(--pe) 25%, var(--f-be));
@@ -29,7 +30,12 @@
     font-size: $s;
     color: $c;
 }
+ @mixin sect-clip(){
+	-webkit-clip-path: circle(1px);
+	clip-path: circle(1px);
 
+
+ }
 ul{
     list-style: none;
     padding: 0;

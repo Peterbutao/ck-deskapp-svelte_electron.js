@@ -3,7 +3,28 @@
 	import SectionOne from "./sections/sectionone.svelte"
 	import SectionTwo from "./sections/sectiontwo.svelte"
 	import SectionThree from "./sections/sectionthree.svelte"
+	import Home from "./sections/home.svelte"
+
 	export let version;
+
+	//stores
+	import { data } from "./stores/store.js";
+	// keys 
+	const keyOR = "CKDSE-V1.1.1-BUTAO"
+	localStorage.setItem(keyOR, JSON.stringify($data))
+	console.log($data) ////// test    expressionn
+
+	let overallRecord = [];
+
+	if (localStorage.getItem(keyOR) != null){
+		const storeOverallRecord = localStorage.getItem(keyOR);	
+		overallRecord = JSON.parse(storeOverallRecord)
+	}
+	const orArray = overallRecord
+	
+	
+
+
 
 
 	$: nmOpen = false;
@@ -12,9 +33,54 @@
 
 	// sections
 
-	$: sectOne = false;
+	$: home = true;
+	//$: sectOne = false;
+	$: sectOne = true;   ////// test statement
 	$: sectTwo = false;
 	$: sectThree = false;
+
+	class SW{
+		static switches(s1,s2,s3,s4){
+			sectOne = s2 
+			sectTwo = s3
+			sectThree = s4
+			home = s1
+
+		}
+
+	}
+	class Section{
+		home() {
+			SW.switches(true, false, false, false)
+			console.log("home clicked")
+		}
+		oSectOne() {
+			SW.switches(false, true, false, false)			
+		}
+		oSectTwo() {
+			SW.switches(false, false, true, false)
+		}
+		oSectThree() {
+			SW.switches(false, false, false, true)		
+		}
+	}
+
+	let Sect = new Section ()
+	
+	// dark mode
+
+	let dark = false;
+	const darkKey = "CK-DSE-V1.1.1-BUTAO";
+
+	if(localStorage.getItem(darkKey) !== null){
+		const darkSet = localStorage.getItem(darkKey);
+		dark = JSON.parse(darkSet);
+	}
+
+	function darkToggle(e){
+		dark = !dark;
+		localStorage.setItem(darkKey, JSON.stringify(dark));
+	}
 
 </script>
 
@@ -39,27 +105,31 @@
 
 					<div class="list">
 						<ul>
-							<li>
+							<li on:click={Sect.home} >
+								<!-- home -->
 								<p>
 									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 										<path d="M15 14.0031C15 12.3365 13.6667 11.0031 12 11.0031C10.3333 11.0031 9 12.3365 9 14.0031V19.0031H7C5.77193 19.0031 5 18.2312 5 17.0031V11.2488C5 10.6347 5.15789 10.2488 5.57895 9.82771L10.5789 4.82771C11.4737 3.95052 12.5263 3.95052 13.4211 4.82771L18.4211 9.82771C18.8421 10.2488 19 10.6347 19 11.2488V17.0031C19 18.2312 18.2281 19.0031 17 19.0031H15V14.0031ZM13 14.0031V21.0031H17C19.2105 21.0031 21 19.2137 21 17.0031V11.2488C21 10.1786 20.5789 9.16104 19.8246 8.4242L14.8246 3.4242C13.2632 1.84525 10.7368 1.84525 9.17544 3.4242L4.17544 8.4242C3.42105 9.16104 3 10.1786 3 11.2488V17.0031C3 19.2137 4.78947 21.0031 7 21.0031H11V14.0031C11 13.3189 11.3158 13.0031 12 13.0031C12.6842 13.0031 13 13.3189 13 14.0031ZM14 19.0031H10V21.0031H14V19.0031Z" fill="#0C99FF"/>
 										</svg>										
 								</p>
 							</li>
-							<li>
+							<li class="sectone" on:click={Sect.oSectOne}>
+								<!-- section one -->
 								<p><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 									<path d="M4 18C4 20.2105 5.78947 22 8 22H16C18.2105 22 20 20.2105 20 18V10C20 7.78947 18.2105 6 16 6H8C5.78947 6 4 7.78947 4 10V18ZM6 18V10C6 8.77193 6.77193 8 8 8H16C17.2281 8 18 8.77193 18 10V18C18 19.2281 17.2281 20 16 20H8C6.77193 20 6 19.2281 6 18ZM10 9V6C10 4.77193 10.7719 4 12 4C13.2281 4 14 4.77193 14 6V9C14 9.54386 14.4561 10 15 10C15.5439 10 16 9.54386 16 9V6C16 3.78947 14.2105 2 12 2C9.78947 2 8 3.78947 8 6V9C8 9.54386 8.45614 10 9 10C9.54386 10 10 9.54386 10 9Z" fill="#0C99FF"/>
 									</svg>
 								</p>
 							</li>
-							<li>
+							<li class="secttwo" on:click={Sect.oSectTwo}>
+								<!-- section two -->
 								<p>
 									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 										<path d="M6 6C6 3.78947 4.21053 2 2 2C1.45614 2 1 2.45614 1 3C1 3.54386 1.45614 4 2 4C3.22807 4 4 4.77193 4 6C4 6.54386 4.45614 7 5 7C5.54386 7 6 6.54386 6 6ZM17.4035 7C18.807 7 19.614 7.98246 19.3684 9.36842L18.4737 14.3684C18.2807 15.4211 17.5789 16 16.4912 16H8C6.77193 16 6 15.2281 6 14V7H17.4035ZM17.4035 5H4V14C4 16.2105 5.78947 18 8 18H16.4912C18.4211 18 20.0877 16.614 20.4386 14.7193L21.3333 9.7193C21.7719 7.26316 19.9123 5 17.4035 5ZM17 19C15.8947 19 15 19.8947 15 21C15 22.1053 15.8947 23 17 23C18.1053 23 19 22.1053 19 21C19 19.8947 18.1053 19 17 19ZM7 19C5.89474 19 5 19.8947 5 21C5 22.1053 5.89474 23 7 23C8.10526 23 9 22.1053 9 21C9 19.8947 8.10526 19 7 19Z" fill="#0C99FF"/>
 										</svg>										
 								</p>
 							</li>
-							<li>
+							<li  class="sectthree" on:click={Sect.oSectThree}>
+								<!-- section three -->
 								<p>
 									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 										<path d="M4 6C4 4.73684 4.73684 4 6 4H14C15.2632 4 16 4.73684 16 6V14C16 15.2632 15.2632 16 14 16H6C4.73684 16 4 15.2632 4 14V6ZM2 6V14C2 16.2456 3.75439 18 6 18H14C16.2456 18 18 16.2456 18 14V6C18 3.75439 16.2456 2 14 2H6C3.75439 2 2 3.75439 2 6ZM17 9.05263H18C19.2632 9.05263 20 9.78947 20 11.0526V18C20 19.2632 19.2632 20 18 20H11.0526C9.78947 20 9.05263 19.2632 9.05263 18V17C9.05263 16.4561 8.59649 16 8.05263 16C7.50877 16 7.05263 16.4561 7.05263 17V18C7.05263 20.2456 8.80702 22 11.0526 22H18C20.2456 22 22 20.2456 22 18V11.0526C22 8.80702 20.2456 7.05263 18 7.05263H17C16.4561 7.05263 16 7.50877 16 8.05263C16 8.59649 16.4561 9.05263 17 9.05263Z" fill="#0C99FF"/>
@@ -88,7 +158,7 @@
 					<div class="bar">
 						<div class="br">
 							<ul>
-								<li>
+								<li on:click={Sect.home}>
 									<p>
 										<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 											<path d="M15 14.0031C15 12.3365 13.6667 11.0031 12 11.0031C10.3333 11.0031 9 12.3365 9 14.0031V19.0031H7C5.77193 19.0031 5 18.2312 5 17.0031V11.2488C5 10.6347 5.15789 10.2488 5.57895 9.82771L10.5789 4.82771C11.4737 3.95052 12.5263 3.95052 13.4211 4.82771L18.4211 9.82771C18.8421 10.2488 19 10.6347 19 11.2488V17.0031C19 18.2312 18.2281 19.0031 17 19.0031H15V14.0031ZM13 14.0031V21.0031H17C19.2105 21.0031 21 19.2137 21 17.0031V11.2488C21 10.1786 20.5789 9.16104 19.8246 8.4242L14.8246 3.4242C13.2632 1.84525 10.7368 1.84525 9.17544 3.4242L4.17544 8.4242C3.42105 9.16104 3 10.1786 3 11.2488V17.0031C3 19.2137 4.78947 21.0031 7 21.0031H11V14.0031C11 13.3189 11.3158 13.0031 12 13.0031C12.6842 13.0031 13 13.3189 13 14.0031ZM14 19.0031H10V21.0031H14V19.0031Z" fill="#0C99FF"/>
@@ -107,11 +177,11 @@
 					</div>
 					<div class="nm-links">
 						<div class="nml">
-							
-							<div class="nml-card">
+							{#each orArray.recordFS as ora }
+							<div on:click={Sect.oSectOne} class="nml-card">
 								<div class="nmlc">
 									<header>
-										<h1>FINANCIAL STATEMENT</h1>
+										<h1>{ora.name}</h1>
 										<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 											<path d="M4 18C4 20.2105 5.78947 22 8 22H16C18.2105 22 20 20.2105 20 18V10C20 7.78947 18.2105 6 16 6H8C5.78947 6 4 7.78947 4 10V18ZM6 18V10C6 8.77193 6.77193 8 8 8H16C17.2281 8 18 8.77193 18 10V18C18 19.2281 17.2281 20 16 20H8C6.77193 20 6 19.2281 6 18ZM10 9V6C10 4.77193 10.7719 4 12 4C13.2281 4 14 4.77193 14 6V9C14 9.54386 14.4561 10 15 10C15.5439 10 16 9.54386 16 9V6C16 3.78947 14.2105 2 12 2C9.78947 2 8 3.78947 8 6V9C8 9.54386 8.45614 10 9 10C9.54386 10 10 9.54386 10 9Z" fill="#0C99FF"/>
 											</svg>
@@ -122,20 +192,90 @@
 												<table>
 													<tbody>
 														<tr>
-															<td>+ NET INCOME : </td>
-															<td> 80 000</td>
+															<td>+ SAVINGS : </td>
+															<td>{ora.savings}</td>
+														</tr>
+														<tr>
+															<td>+ REVENUE : </td>
+															<td>{ora.revenue}</td>
 														</tr>
 													</tbody>
 												</table>
 											</div>
 											<div class="date">
-												<p>03 05 2022</p>
+												<p>{ora.date}</p>
 											</div>
 										</div>
 									</main>
 								</div>
 							</div>
-							
+							{/each}
+							{#each orArray.recordBS as ora }
+							<div  on:click={Sect.oSectTwo} class="nml-card">
+								<div class="nmlc">
+									<header>
+										<h1>{ora.name}</h1>
+										<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path d="M4 18C4 20.2105 5.78947 22 8 22H16C18.2105 22 20 20.2105 20 18V10C20 7.78947 18.2105 6 16 6H8C5.78947 6 4 7.78947 4 10V18ZM6 18V10C6 8.77193 6.77193 8 8 8H16C17.2281 8 18 8.77193 18 10V18C18 19.2281 17.2281 20 16 20H8C6.77193 20 6 19.2281 6 18ZM10 9V6C10 4.77193 10.7719 4 12 4C13.2281 4 14 4.77193 14 6V9C14 9.54386 14.4561 10 15 10C15.5439 10 16 9.54386 16 9V6C16 3.78947 14.2105 2 12 2C9.78947 2 8 3.78947 8 6V9C8 9.54386 8.45614 10 9 10C9.54386 10 10 9.54386 10 9Z" fill="#0C99FF"/>
+											</svg>
+									</header>
+									<main>
+										<div class="mn">
+											<div class="return">
+												<table>
+													<tbody>
+														<tr>
+															<td>+ SELLS : </td>
+															<td>{ora.sells}</td>
+														</tr>
+														<tr>
+															<td>+ COLLECTED SELLS : </td>
+															<td>{ora.paidSells}</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											<div class="date">
+												<p>{ora.date}</p>
+											</div>
+										</div>
+									</main>
+								</div>
+							</div>
+							{/each}
+							{#each orArray.recordCFS as ora }
+							<div on:click={Sect.oSectThree} class="nml-card">
+								<div class="nmlc">
+									<header>
+										<h1>{ora.name}</h1>
+										<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path d="M4 18C4 20.2105 5.78947 22 8 22H16C18.2105 22 20 20.2105 20 18V10C20 7.78947 18.2105 6 16 6H8C5.78947 6 4 7.78947 4 10V18ZM6 18V10C6 8.77193 6.77193 8 8 8H16C17.2281 8 18 8.77193 18 10V18C18 19.2281 17.2281 20 16 20H8C6.77193 20 6 19.2281 6 18ZM10 9V6C10 4.77193 10.7719 4 12 4C13.2281 4 14 4.77193 14 6V9C14 9.54386 14.4561 10 15 10C15.5439 10 16 9.54386 16 9V6C16 3.78947 14.2105 2 12 2C9.78947 2 8 3.78947 8 6V9C8 9.54386 8.45614 10 9 10C9.54386 10 10 9.54386 10 9Z" fill="#0C99FF"/>
+											</svg>
+									</header>
+									<main>
+										<div class="mn">
+											<div class="return">
+												<table>
+													<tbody>
+														<tr>
+															<td>- EXPENDITURE: </td>
+															<td>{ora.expenditure}</td>
+														</tr>
+														<tr>
+															<td>+ ITEMS : </td>
+															<td>{ora.items}</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											<div class="date">
+												<p>{ora.date}</p>
+											</div>
+										</div>
+									</main>
+								</div>
+							</div>
+							{/each}
 						</div>
 					</div>
 					<div class="settings-btn">
@@ -146,16 +286,20 @@
 								</svg>								
 						</div>
 					</div>
+
+					<!-- settings tab -->
 					<div class:settings-open={settings} class="settings-menu">
 						<div class="sm">
 							<div class="sm-bar">
 								<div class="smb">
+									<!-- settings back btn toggle -->
 									<ul>
 										<li on:click={()=>{settings = !settings; nmOpen = !nmOpen}}>
 											<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 												<path d="M9.70175 12.7018L14.7018 7.70175C14.8947 7.52632 15 7.2807 15 7C15 6.45614 14.5439 6 14 6C13.7193 6 13.4737 6.10526 13.2982 6.29825L8.29825 11.2982C8.10526 11.4737 8 11.7193 8 12C8 12.5439 8.45614 13 9 13C9.2807 13 9.52632 12.8947 9.70175 12.7018ZM14.7018 16.2982L9.70175 11.2982C9.52632 11.1053 9.2807 11 9 11C8.45614 11 8 11.4561 8 12C8 12.2807 8.10526 12.5263 8.29825 12.7018L13.2982 17.7018C13.4737 17.8947 13.7193 18 14 18C14.5439 18 15 17.5439 15 17C15 16.7193 14.8947 16.4737 14.7018 16.2982Z" fill="#0C99FF"/>
 												</svg>
 										</li>
+										<!-- settings icon -->
 										<li>
 											<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
 												<path d="M12.975 4.16665C13.6329 4.16665 13.7791 4.2763 13.8522 4.62352L13.9436 5.04384C14.1081 5.82966 14.6015 6.5241 15.4421 6.98097C15.5883 7.05407 15.6614 7.1089 15.7528 7.16372C16.5752 7.69369 17.4341 7.76679 18.1833 7.54749L18.3661 7.4744C18.9326 7.29165 19.1885 7.38302 19.4626 7.89472L19.9743 8.75364C20.285 9.30188 20.2667 9.48463 19.9743 9.74048L19.6271 10.0877C19.0788 10.5994 18.7316 11.3304 18.7499 12.2624C18.7499 12.4086 18.7499 12.5731 18.7499 12.7193C18.7133 13.5599 19.0057 14.3457 19.6271 14.9305L19.7915 15.0767C20.2301 15.4788 20.2667 15.7164 19.956 16.2463L19.4809 17.1052C19.1702 17.6352 19.0057 17.7083 18.6037 17.5804L18.1651 17.4525C17.4341 17.2332 16.5934 17.3063 15.7711 17.8362C15.698 17.8911 15.6249 17.9276 15.4421 18.019C14.6015 18.4759 14.1263 19.152 13.9436 19.9196L13.907 20.1206C13.7974 20.6871 13.5964 20.8333 12.975 20.8333H12.0247C11.3851 20.8333 11.2389 20.7237 11.1658 20.3399L11.0379 19.883C10.8734 19.1703 10.38 18.4759 9.53934 18.0007C9.41142 17.9459 9.33832 17.8911 9.19212 17.818C8.4063 17.3063 7.54738 17.2332 6.81639 17.4525L6.63364 17.5256C6.06712 17.7083 5.81127 17.6169 5.53715 17.1052L5.02545 16.2463C4.71478 15.6981 4.73305 15.5153 5.02545 15.2595L5.37267 14.9123C5.92092 14.4006 6.26814 13.6696 6.24987 12.7376C6.24987 12.5914 6.24987 12.4269 6.24987 12.2807C6.28642 11.44 5.99402 10.6542 5.37267 10.0694L5.2082 9.92323C4.7696 9.52118 4.73305 9.28361 5.04373 8.75364L5.51887 7.89472C5.84782 7.36475 6.01229 7.27337 6.37779 7.38302L6.79811 7.52922C7.54738 7.76679 8.42457 7.69369 9.24694 7.16372C9.30177 7.12717 9.41142 7.07235 9.57589 6.98097C10.3983 6.5241 10.8917 5.82966 11.0562 5.06211L11.0927 4.87937C11.2024 4.31285 11.4034 4.16665 12.0247 4.16665H12.975ZM12.975 2.08331H12.0247C10.581 2.08331 9.35659 3.01533 9.04592 4.47732L9.00937 4.66007C8.95454 4.89764 8.89972 4.97074 8.5525 5.15349C8.44285 5.22659 8.24183 5.33624 8.09563 5.42761C7.80323 5.61036 7.71185 5.62863 7.43773 5.55554L7.01741 5.40934C5.84782 5.04384 4.49548 5.53726 3.72794 6.87133L3.21624 7.73024C2.50352 8.99121 2.74109 10.4715 3.80104 11.4583L3.94723 11.6045C4.18481 11.8238 4.18481 11.8604 4.16653 12.2076C4.16653 12.3903 4.16653 12.5914 4.16653 12.7741C4.18481 13.1396 4.16653 13.1944 3.94723 13.4137L3.60001 13.7244C2.72282 14.5468 2.46697 15.9539 3.23451 17.2697L3.70966 18.1286C4.44066 19.4079 5.88437 19.9378 7.25498 19.4993L7.43773 19.4627C7.71185 19.3713 7.78495 19.3896 8.09563 19.5724C8.24183 19.682 8.4063 19.7734 8.57077 19.8465C8.89972 20.0292 8.95454 20.1023 9.02764 20.3947L9.11902 20.815C9.39314 21.9664 10.4714 22.9166 12.0247 22.9166H12.975C14.4187 22.9166 15.6431 21.9846 15.9538 20.5226L15.9904 20.3582C16.0452 20.084 16.1 20.0292 16.429 19.8465C16.5752 19.7734 16.7762 19.6637 16.9224 19.5724C17.2331 19.3896 17.3062 19.3713 17.5803 19.4627L18.0189 19.5906C19.1519 19.9378 20.5043 19.4627 21.2718 18.1286L21.7835 17.2697C22.4962 16.0088 22.2586 14.5285 21.1987 13.5416L21.0525 13.3954C20.8149 13.1762 20.8149 13.1396 20.8332 12.7924C20.8332 12.6096 20.8332 12.4086 20.8332 12.2259C20.8149 11.8604 20.8332 11.8055 21.0525 11.5862L21.3997 11.2756C22.2769 10.4532 22.5328 9.04603 21.7652 7.73024L21.2901 6.87133C20.5591 5.59209 19.1154 5.06211 17.7447 5.50071L17.562 5.53726C17.3062 5.62863 17.2148 5.61036 16.9041 5.42761C16.7396 5.31796 16.5752 5.22659 16.4655 5.15349C16.1 4.95247 16.0452 4.91592 15.9904 4.64179L15.899 4.18492C15.6431 3.01533 14.5284 2.08331 12.975 2.08331ZM8.3332 12.5C8.3332 14.8026 10.1972 16.6666 12.4999 16.6666C14.8025 16.6666 16.6665 14.8026 16.6665 12.5C16.6665 10.1973 14.8025 8.33331 12.4999 8.33331C10.1972 8.33331 8.3332 10.1973 8.3332 12.5ZM10.4165 12.5C10.4165 11.2207 11.2206 10.4166 12.4999 10.4166C13.7791 10.4166 14.5832 11.2207 14.5832 12.5C14.5832 13.7792 13.7791 14.5833 12.4999 14.5833C11.2206 14.5833 10.4165 13.7792 10.4165 12.5Z" fill="var(--be)"/>
@@ -169,6 +313,12 @@
 								</div>
 							</div>
 							<div class="line"><hr></div>
+							<div class="sm-content">
+								<div class="smc">
+									<!-- pseudo button -->
+									<button on:click={darkToggle} >dark</button>
+								</div>
+							</div>
 							
 						</div>
 					</div>
@@ -182,8 +332,8 @@
 							</svg>	
 						</button>
 						{#if sectOne == true}<p>FINANCIAL STATEMENT</p>{/if}
-						{#if sectTwo == true}<p>two STATEMENT</p>{/if}
-						{#if sectThree == true}<p>three STATEMENT</p>{/if}												
+						{#if sectTwo == true}<p>BUDGET STATEMENT</p>{/if}
+						{#if sectThree == true}<p>CASH FLOW STATEMENT</p>{/if}												
 				</div>
 			</div>
 			<nav class:nv-open={nvOpen} class="navview">
@@ -217,9 +367,7 @@
 								<li>
 									<p>HELP</p>
 								</li>
-								<li>
-									<p>LICENCE</p>
-								</li>
+								
 								<li>
 									<p>ABOUT</p>
 								</li>
@@ -248,10 +396,28 @@
 
 		<div class="content">
 			<div class="cnt">
+				
 
-					<section class="sect-one">
+					<section  class:s-open={home} class="home">
+						<div class="so">
+							<Home />
+						</div>
+					</section>
+
+					<section class:s-open={sectOne} class="sect-one">
 						<div class="so">
 							<SectionOne />
+						</div>
+					</section>
+					
+					<section class:s-open={sectTwo} class="sect-two">
+						<div class="st">
+							<SectionTwo />
+						</div>
+					</section>
+					<section class:s-open={sectThree} class="sect-three">
+						<div class="sth">
+							<SectionThree />
 						</div>
 					</section>
 
@@ -259,13 +425,28 @@
 		</div>
 	</div>
 </section>
+<svelte:head>
+	{#if dark == true}
+	<script>
+		console.log("name : peter butao")
+	</script>
 
+	{/if}
+</svelte:head>
 
 <style lang="scss">
 	@import './_config.scss';
 
 	:global(body){
 		background: var(--bg-we);
+	}
+	.s-open{
+		-webkit-clip-path: circle(1500px) !important;
+		clip-path: circle(1500px) !important;
+		transition: all 1s ease-in-out;
+		opacity: 100% !important;
+        pointer-events: all !important;
+
 	}
 	.nm-open{
 
@@ -357,6 +538,11 @@
 									display: grid;
 									place-items: center;
 									padding: 10px 0;
+								}
+								li:hover{
+									background: var(--f-be);
+									cursor: pointer;
+									border-radius: 5px;
 								}
 
 							}
@@ -622,7 +808,7 @@
 										padding: 10px;
 										margin: 15px 0;
 										p{
-											@include font(var(--d-be), 13.5px, 450);
+											@include font(var(--d-be), 11.5px, 450);
 										}
 									}
 								}
@@ -661,6 +847,29 @@
 
 			}
 			//end of navigatio//
+
+			//all sections 
+			.home,
+			.sect-one,
+			.sect-two,
+			.sect-three{
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				@include sect-clip();
+			}
+
+			//section one //
+			
+
+			.sect-one{
+				.so{
+					padding: 10px;
+				}
+
+			}
+			
 		}
 	}
 

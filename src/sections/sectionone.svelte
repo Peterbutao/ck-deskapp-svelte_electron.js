@@ -1,33 +1,48 @@
 <script>
     import Ill from "../components/illustration.svelte";
 
-    $: formOpen = false;
+    //$: formOpen = false;
+    $: formOpen = true;   /// test statement
+    $: submit = false;
+    $: error = false;
 
-    let dt  = Date();
-    console.log(dt.toString())
+    let dt  = new Date();
 
     //form
-    let date = ''.replace('/', '-');
+    let date = dt.toLocaleDateString();
     let revenue = '';
     let other = '';
     let expenditure = '';
 
     class FinancialStateObj{
         constructor(dt, rv, ot, ex){
-            this.date = dt;
+            this.date = dt.toLOcaleDAteString();
             this.revenue = rv;
             this.otherCost = ot;
-            this.expenditure = ex;
-            this.balance = rv - (ot + ex);
-            this.savings = this.balance / 0.20;
+            this.expenditure = ex;            
+        };
+        static balance(){
+            return this.rv - (this.ot + this.ex)
+        };
+        static savings(){
+            return this.balance / 0.20
         }
     }
 
-    function submit(e){
+    function submitFunction(e){
         e.preventDefault();
-        if(revenue !== ''){
+        if((revenue !== '') && (expenditure !== '')){
             const FSarray = [new FinancialStateObj(new Date(date), revenue, other, expenditure)]
             console.log(FSarray)
+        }
+        else{
+            error = true;
+            
+            setTimeOut(()=>{
+                error = false
+            }, 5000)
+
+            console.log(error)  //// test expression
         }
     }
 </script>
@@ -96,62 +111,7 @@
                             <td>20 000</td>
                             <td>10 000</td>
                         </tr>
-                        <tr>
-                            <td>03 05 2022</td>
-                            <td>80 000</td>
-                            <td>50 000</td>
-                            <td>34 000</td>
-                            <td>20 000</td>
-                            <td>10 000</td>
-                        </tr>
-                        <tr>
-                            <td>03 05 2022</td>
-                            <td>80 000</td>
-                            <td>50 000</td>
-                            <td>34 000</td>
-                            <td>20 000</td>
-                            <td>10 000</td>
-                        </tr>
-                        <tr>
-                            <td>03 05 2022</td>
-                            <td>80 000</td>
-                            <td>50 000</td>
-                            <td>34 000</td>
-                            <td>20 000</td>
-                            <td>10 000</td>
-                        </tr>
-                        <tr>
-                            <td>03 05 2022</td>
-                            <td>80 000</td>
-                            <td>50 000</td>
-                            <td>34 000</td>
-                            <td>20 000</td>
-                            <td>10 000</td>
-                        </tr>
-                        <tr>
-                            <td>03 05 2022</td>
-                            <td>80 000</td>
-                            <td>50 000</td>
-                            <td>34 000</td>
-                            <td>20 000</td>
-                            <td>10 000</td>
-                        </tr>
-                        <tr>
-                            <td>03 05 2022</td>
-                            <td>80 000</td>
-                            <td>50 000</td>
-                            <td>34 000</td>
-                            <td>20 000</td>
-                            <td>10 000</td>
-                        </tr>
-                        <tr>
-                            <td>03 05 2022</td>
-                            <td>80 000</td>
-                            <td>50 000</td>
-                            <td>34 000</td>
-                            <td>20 000</td>
-                            <td>10 000</td>
-                        </tr>
+                        
 
                     </tbody>
                 </table>
@@ -219,7 +179,7 @@
     
                                         <div class="formgroup">
                                             <label for="date">DATE</label>
-                                            <input bind:value={date} type="date" name="date" class="date" id="date">
+                                            <input bind:value={date} type="text" name="date" class="date" id="date">
                                         </div>
                                         <div class="formgroup">
                                             <label for="rvenue">REVENUE</label>
@@ -235,7 +195,7 @@
                                            
                                         </div>
                                         <div class="formgroup">
-                                            <button on:click={submit} class="submit">SUBMIT</button>
+                                            <button on:click={submitFunction} class="submit">SUBMIT</button>
                                         </div>
     
     
@@ -251,7 +211,7 @@
                                     <Ill />
                                 </div>
                             </div>
-                            {#if revenue != ''}
+                            {#if submit == true}
                             <div class="text">
                                 <div class="txt">
                                     <p>NET INCOME : {(revenue - (other + expenditure))/0.20}</p>
@@ -274,6 +234,7 @@
 </article>
 
 <style lang="scss">
+
     @import "../_config.scss";
 
     .form-open{
@@ -327,6 +288,7 @@
                 .secttwo{
                     
                     table{
+                        border-radius: 8px;
                         width: 100%;
                         background: var(--pe);
                         thead{
@@ -359,7 +321,7 @@
             .section-three{
                 position:fixed;
                 z-index: 80;
-                background: var(--w);
+                background: var(--bg-we);
                 bottom:0;
                 width: 100%;
                 padding-right: 10vh;
@@ -396,6 +358,7 @@
                         button{
                             display: flex;
                             align-items: center;
+                            border-radius: 5px;
                             background: var(--d-be);
                             p{
                                 @include font(var(--we), 12px , 500);

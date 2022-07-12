@@ -25,6 +25,7 @@
     </div>
 </div>
 <style lang="scss">
+	
     @import "../_config.scss";
 
     .preloader{
@@ -63,6 +64,7 @@
 								box-shadow:0 0 20px rgba(0, 0, 0, 0.07);
 								animation:bouncer cubic-bezier(.455,.03,.515,.955) .75s infinite alternate;
 								padding: 7px 8px;
+								border-radius: 5px;
 								-webkit-background-clip: text;
 								background-clip: text;
 							}
